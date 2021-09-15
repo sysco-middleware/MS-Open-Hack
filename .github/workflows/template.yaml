@@ -20,5 +20,5 @@ jobs:
         run: dotnet test --no-build
         working-directory: apis/poi
         if: failure() # OR Check a bool variable you create and toggle as needed 
-        uses: JasonEtco/create-an-issue@master 
+        - uses: JasonEtco/create-an-issue@master 
  env: GITHUB\_TOKEN:${{ secrets.GITHUB\_TOKEN }}  
