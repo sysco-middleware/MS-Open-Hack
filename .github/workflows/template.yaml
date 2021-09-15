@@ -17,7 +17,7 @@ jobs:
         run: dotnet build --no-restore
         working-directory: apis/poi
       - name: Test with the dotnet CLI
-        run: dotnet test --no-build
+        run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests /p:CollectCoverage=true /p:CoverletOutput=lcov/ /p:CoverletOutputFormat=lcov
         working-directory: apis/poi
       - name: code coverage
         uses: codecov/codecov-action@v2
@@ -26,3 +26,5 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: true
           verbose: true
+          files: lcov/coverage.info
+          working-directory: /lcov/
