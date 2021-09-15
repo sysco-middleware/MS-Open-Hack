@@ -27,4 +27,3 @@ jobs:
           fail_ci_if_error: true
           verbose: true
           files: /home/runner/work/MS-Open-Hack/MS-Open-Hack/apis/poi/tests/IntegrationTests/coverage.info
-          working-directory: apis/poi
