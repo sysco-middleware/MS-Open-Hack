@@ -26,5 +26,5 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: true
           verbose: true
-          directory: apis/poi/tests/UnitTests/lcov/
+          working-directory: apis/poi/tests/UnitTests/lcov/
 
