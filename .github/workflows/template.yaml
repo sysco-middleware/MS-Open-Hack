@@ -27,3 +27,14 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: apis/poi/tests/UnitTests/lcov/coverage.info
+      - if: ${{ failure() }}
+        uses: actions/github-script@v4
+        with:
+          script: |
+            let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+            github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Error in build',
+              body: body
+            })
