@@ -19,3 +19,11 @@ jobs:
       - name: Test with the dotnet CLI
         run: dotnet test --no-build
         working-directory: apis/poi
+        - uses: actions/checkout@master
+      - name: code coverage
+        uses: codecov/codecov-action@v2
+        with:
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
