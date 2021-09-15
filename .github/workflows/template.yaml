@@ -26,5 +26,4 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: true
           verbose: true
-          files: lcov/coverage.info
-          working-directory: /lcov/
+          files: ./coverage.info
