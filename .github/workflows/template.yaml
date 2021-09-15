@@ -20,5 +20,5 @@ jobs:
         run: dotnet test --no-build
         working-directory: apis/poi
       - if: ${{ failure() }}
-        uses: JasonEtco/create-an-issue@master 
+        uses: JasonEtco/create-an-issue@v2 
         env: ${{ github.token }}  
