@@ -26,5 +26,5 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: true
           verbose: true
-          files: apis/poi/coverage.info
+          files: /home/runner/work/MS-Open-Hack/MS-Open-Hack/apis/poi/tests/IntegrationTests/coverage.info
           working-directory: apis/poi
