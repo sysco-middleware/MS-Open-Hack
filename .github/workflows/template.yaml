@@ -10,6 +10,9 @@ jobs:
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: '2.1.x'
+      - name: Add Code Coverage Tools
+        working-directory: apis/poi/tests/UnitTests
+        run: dotnet add package coverlet.msbuild
       - name: Install dependencies
         run: dotnet restore
         working-directory: apis/poi
@@ -24,4 +27,3 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: apis/poi/tests/UnitTests/lcov/coverage.info
-
