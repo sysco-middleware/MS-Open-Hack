@@ -26,5 +26,5 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: true
           verbose: true
-          files: /coverage.info
+          files: apis/poi/coverage.info
           working-directory: apis/poi
