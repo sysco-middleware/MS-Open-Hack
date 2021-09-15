@@ -21,4 +21,4 @@ jobs:
         working-directory: apis/poi
       - if: ${{ failure() }}
         uses: JasonEtco/create-an-issue@master 
-        env: ${{ secrets.GITHUB\_TOKEN }}  
+        env: ${{ github.token }}  
