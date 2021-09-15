@@ -19,3 +19,14 @@ jobs:
       - name: Test with the dotnet CLI
         run: dotnet test --no-build
         working-directory: apis/poi
+      - if: ${{ failure() }}
+        uses: actions/github-script@v4
+        with:
+          script: |
+            let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+            github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Error in build',
+              body: body
+            })
