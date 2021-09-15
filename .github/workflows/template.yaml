@@ -15,5 +15,7 @@ jobs:
         working-directory: apis/poi
       - name: Build
         run: dotnet build --no-restore
+        working-directory: apis/poi
       - name: Test with the dotnet CLI
         run: dotnet test
+        working-directory: apis/poi
