@@ -11,7 +11,7 @@ jobs:
         with:
           dotnet-version: '2.1.x'
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore /apis/poi
       - name: Build
         run: dotnet build --no-restore
       - name: Test with the dotnet CLI
