@@ -27,4 +27,4 @@ jobs:
           fail_ci_if_error: true
           verbose: true
           files: /coverage.info
-          working-directory: apis/poi/lcov
+          working-directory: apis/poi
