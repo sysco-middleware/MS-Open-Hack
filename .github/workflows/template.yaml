@@ -19,6 +19,6 @@ jobs:
       - name: Test with the dotnet CLI
         run: dotnet test --no-build
         working-directory: apis/poi
-      - if: failure()
+      - if: ${{ failure() }}
         uses: JasonEtco/create-an-issue@master 
         env: ${{ secrets.GITHUB\_TOKEN }}  
