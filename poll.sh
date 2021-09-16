@@ -56,6 +56,9 @@ while [[ true ]]; do
       status=${result:9:3}
    fi 
    timestamp=$(date "+%Y%m%d-%H%M%S")
+   if [[$timestamp != 200]]; then
+        exit 1
+   fi
    if [[ -z $hasUrl ]]; then
      echo "$timestamp | $status "
    else
