@@ -5,7 +5,7 @@ on:
       - feature_*
     paths:
       - apis/poi/**
-      - .github/**
+      - .github/workflows/poi.yaml
   pull_request:
     branches:
       - develop
