@@ -33,7 +33,4 @@ jobs:
       - name: Build
         run: go build -v .
         working-directory: apis/trips
-      - name: Generate coverage report
-        run: |
-          go test `go list ./... | grep -v examples` -coverprofile=coverage.txt -covermode=atomic
-        working-directory: apis/trips
+
