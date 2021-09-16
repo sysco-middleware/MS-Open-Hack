@@ -80,7 +80,7 @@ jobs:
       - name: Check health of staging
         shell: bash
         run: poll.sh 'https://openhackfho408g7poi.azurewebsites.net/api/healthcheck/poi'
-        working-directory: .
+        working-directory: /
       - if: ${{ success() }}
         name: Swap slots
         run: echo On success!
