@@ -15,7 +15,7 @@ jobs:
   Build_POI_API:
     runs-on: ubuntu-latest
     env: 
-      ACR_URL: 'openhackfho408g7acr.azurecr.io'
+      ACR_URL: openhackfho408g7acr.azurecr.io
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
