@@ -5,6 +5,7 @@ on:
       - feature_*
     paths:
       - apis/poi/**
+      - .github/**
   pull_request:
     branches:
       - develop
@@ -55,5 +56,5 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
       - run: |
-          docker build . -t openhackfho408g7acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}
-          docker push openhackfho408g7acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}
+          docker build . -t openhackfho408g7acr.azurecr.io/devopsoh/api-poi:${{github.run_number}}
+          docker push openhackfho408g7acr.azurecr.io/devopsoh/api-poi:${{github.run_number}}
