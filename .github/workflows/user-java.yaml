@@ -5,6 +5,7 @@ on:
       - feature_*
     paths:
       - apis/user-java/**
+      - .github/**
   pull_request:
     branches:
       - develop
