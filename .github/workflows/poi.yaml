@@ -73,4 +73,14 @@ jobs:
           slot-name: 'staging' 
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_POI  }}
           images: ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}}
-          
+  SWAP_SLOTS:
+    needs: DEPLOY_TO_STAGING
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check health of staging
+        shell: pwsh
+        run: |
+          .\api\poi\tests\online.ps1 
+      - if: ${{ success() }}
+        name: Swap slots
+        run: echo On success!
