@@ -5,7 +5,7 @@ on:
       - feature_*
     paths:
       - apis/trips/**
-      - .github/**
+      - .github/workflows/trips.yaml
   pull_request:
     branches:
       - develop

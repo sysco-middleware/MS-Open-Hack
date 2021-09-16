@@ -5,7 +5,7 @@ on:
       - feature*
     paths:
       - apis/user-java/**
-      - .github/**
+      - .github/workflows/user-java.yaml
   pull_request:
     branches:
       - develop

@@ -1,10 +1,13 @@
 name: POI Pipeline
+env: 
+  ACR_URL: openhackfho408g7acr.azurecr.io
 on:
   push:
     branches:
       - feature_*
     paths:
       - apis/poi/**
+      - .github/workflows/poi.yaml
   pull_request:
     branches:
       - develop
@@ -13,8 +16,6 @@ on:
 jobs:
   Build_POI_API:
     runs-on: ubuntu-latest
-    env: 
-      ACR_URL: openhackfho408g7acr.azurecr.io
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -61,3 +62,15 @@ jobs:
           docker build . -t ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}} --file Dockerfile
           docker push ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}}
         working-directory: apis/poi/web
+  DEPLOY_TO_STAGING:
+    needs: Build_POI_API 
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Run Azure webapp deploy action using publish profile credentials'
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: 'openhackfho408g7poi'
+          slot-name: 'staging' 
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_POI  }}
+          images: ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}}
+          
