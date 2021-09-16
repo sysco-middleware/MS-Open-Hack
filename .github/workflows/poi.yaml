@@ -5,7 +5,6 @@ on:
       - feature_*
     paths:
       - apis/poi/**
-      - .github/**
   pull_request:
     branches:
       - develop
