@@ -1,11 +1,10 @@
-name: Build and publish POI API
-on: 
-  push: 
+name: GitHub Actions Demo
+on:
+  push:
     branches:
       - feature_*
     paths:
       - apis/poi/**
-      - .github/**
   pull_request:
     branches:
       - develop
@@ -52,10 +51,9 @@ jobs:
       - name: Push to Azure
         uses: azure/docker-login@v1
         with:
-          login-server: 'openhackfho408g7acr.azurecr.io' 
+          login-server: 'openhackfho408g7acr.azurecr.io'
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
-      - run:
-          docker pull openhackfho408g7acr.azurecr.io/devopsoh/api-poi:changeme
-          
-        
+      - run: |
+          docker build . -t openhackfho408g7acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}
+          docker push openhackfho408g7acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}
