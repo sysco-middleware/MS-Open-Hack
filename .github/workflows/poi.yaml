@@ -1,6 +1,6 @@
-name: Build and publish POI API
-on: 
-  push: 
+name: POI Pipeline
+on:
+  push:
     branches:
       - feature_*
     paths:
@@ -14,6 +14,8 @@ on:
 jobs:
   Build_POI_API:
     runs-on: ubuntu-latest
+    env: 
+      ACR_URL: openhackfho408g7acr.azurecr.io
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -28,7 +30,7 @@ jobs:
         run: dotnet restore
         working-directory: apis/poi
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build --configuration Release --no-restore
         working-directory: apis/poi
       - name: Test with the dotnet CLI
         run: dotnet test --no-restore --verbosity normal /p:CollectCoverage=true /p:CoverletOutput=lcov/ /p:CoverletOutputFormat=lcov
@@ -49,13 +51,14 @@ jobs:
               title: 'Error in build',
               body: body
             })
-      - name: Push to Azure
+      - name: Login to Azure
         uses: azure/docker-login@v1
         with:
-          login-server: 'openhackfho408g7acr.azurecr.io' 
+          login-server: ${{ env.ACR_URL }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
-      - run:
-          docker pull openhackfho408g7acr.azurecr.io/devopsoh/api-poi:changeme
-          
-        
+      - name: Build and push to Docker
+        run: |
+          docker build . -t ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}} --file Dockerfile
+          docker push ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}}
+        working-directory: apis/poi/web
