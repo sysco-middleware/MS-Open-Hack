@@ -1,4 +1,4 @@
-name: Trips Go
+name: Trips API
 on:
   push:
     branches:
@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: '1.14'
-      - name: Test with the Java CLI
+      - name: Run Go from CLI
         run: go run hello.go
         working-directory: apis/trips
       - if: ${{ failure() }}
