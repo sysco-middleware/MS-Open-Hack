@@ -59,5 +59,6 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
       - name: Build and push to Docker
         run: |
-          docker build . -t ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}}
+          docker build . -t ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}} --file ./web/Dockerfile
           docker push ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}}
+        working-directory: apis/poi
