@@ -22,8 +22,14 @@ jobs:
         with:
           go-version: '1.14'
       - name: Run Go from CLI
-        run: go run hello.go
+        run: go run main.go
         working-directory: apis/trips
+      - name: Generate coverage report
+        run: go test `go list ./... | grep -v examples` -coverprofile=coverage.txt -covermode=atomic
+      - uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: apis/trips/tests/UnitTests/lcov/coverage.info
       - if: ${{ failure() }}
         uses: actions/github-script@v4
         with:
