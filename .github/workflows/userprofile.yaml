@@ -5,6 +5,7 @@ on:
       - feature*
     paths:
       - apis/userprofile/**
+      - .github/workflows/userprofile.yaml
   pull_request:
     branches:
       - develop
