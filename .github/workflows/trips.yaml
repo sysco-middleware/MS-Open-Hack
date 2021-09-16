@@ -1,44 +1,29 @@
-name: Trips Pipeline
+name: Trips Go
 on:
   push:
     branches:
       - feature_*
     paths:
       - apis/trips/**
+      - .github/**
   pull_request:
     branches:
       - develop
     paths:
       - apis/trips/**
 jobs:
-  Build_Trips_API:
+  Build_TRIPS_API:
     runs-on: ubuntu-latest
-    env: 
-      ACR_URL: openhackfho408g7acr.azurecr.io
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v1.7.2
+      - name: Setup Go
+        uses: actions/setup-go@v2
         with:
-          dotnet-version: '2.1.x'
-      - name: Add Code Coverage Tools
-        working-directory: apis/trips/tests/UnitTests
-        run: dotnet add package coverlet.msbuild
-      - name: Install dependencies
-        run: dotnet restore
+          go-version: '1.14'
+      - name: Test with the Java CLI
+        run: go run hello.go
         working-directory: apis/trips
-      - name: Build
-        run: dotnet build --no-restore
-        working-directory: apis/trips
-      - name: Test with the dotnet CLI
-        run: dotnet test --no-restore --verbosity normal /p:CollectCoverage=true /p:CoverletOutput=lcov/ /p:CoverletOutputFormat=lcov
-        working-directory: apis/trips
-      - name: code coverage
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: apis/poi/tests/UnitTests/lcov/coverage.info
       - if: ${{ failure() }}
         uses: actions/github-script@v4
         with:
@@ -50,14 +35,12 @@ jobs:
               title: 'Error in build',
               body: body
             })
-      - name: Login to Azure
+      - name: Push to Azure
         uses: azure/docker-login@v1
         with:
-          login-server: ${{ env.ACR_URL }}
+          login-server: 'openhackfho408g7acr.azurecr.io'
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
-      - name: Build and push to docker
-        run: |
-          docker build . -t ${{ env.ACR_URL }}/devopsoh/api-trips:${{github.run_number}} --file Dockerfile
-          docker push ${{ env.ACR_URL }}/devopsoh/api-trips:${{github.run_number}}
-        working-directory: apis/trips
+      - run: |
+          docker build . -t openhackfho408g7acr.azurecr.io/devopsoh/api-trips:${{github.run_number}}
+          docker push openhackfho408g7acr.azurecr.io/devopsoh/api-trips:${{github.run_number}}
