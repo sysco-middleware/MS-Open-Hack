@@ -51,9 +51,10 @@ jobs:
       - name: Push to Azure
         uses: azure/docker-login@v1
         with:
-          login-server: '<login server>' # default: index.docker.io
-          username: '<username>'
-          password: '<password>'
-      - run: |
+          login-server: 'openhackfho408g7acr.azurecr.io' 
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+      - run:
+          docker pull openhackfho408g7acr.azurecr.io/devopsoh/api-poi:changeme
           
         
