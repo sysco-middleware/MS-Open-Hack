@@ -78,9 +78,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check health of staging
-        shell: pwsh
-        run: |
-          .\api\poi\tests\online.ps1 
+        shell: bash
+        run: .\poll.sh 'https://openhackfho408g7poi.azurewebsites.net/api/healthcheck/poi'
       - if: ${{ success() }}
         name: Swap slots
         run: echo On success!
