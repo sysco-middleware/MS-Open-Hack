@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:2.1 AS build-env
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
@@ -12,7 +12,7 @@ COPY ./appsettings.*.json /app/out/
 COPY ./appsettings.json /app/out/
 
 # build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/aspnet:2.1
 WORKDIR /app
 
 ENV SQL_USER="YourUserName" \
