@@ -1,10 +1,11 @@
-name: GitHub Actions Demo
+name: Build and publish POI API
 on: 
   push: 
     branches:
       - feature_*
     paths:
       - apis/poi/**
+      - .github/**
   pull_request:
     branches:
       - develop
@@ -48,3 +49,13 @@ jobs:
               title: 'Error in build',
               body: body
             })
+      - name: Push to Azure
+        uses: azure/docker-login@v1
+        with:
+          login-server: 'openhackfho408g7acr.azurecr.io' 
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+      - run:
+          docker pull openhackfho408g7acr.azurecr.io/devopsoh/api-poi:changeme
+          
+        
