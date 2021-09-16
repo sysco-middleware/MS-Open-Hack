@@ -2,7 +2,7 @@ name: UserProfile API
 on:
   push:
     branches:
-      - feature_*
+      - feature*
     paths:
       - apis/userprofile/**
   pull_request:
@@ -41,5 +41,6 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
       - run: |
-          docker build . -t openhackfho408g7acr.azurecr.io/devopsoh/api-userprofile:${{github.run_number}}
+          docker build . -t openhackfho408g7acr.azurecr.io/devopsoh/api-userprofile:${{github.run_number}} --file Dockerfile
           docker push openhackfho408g7acr.azurecr.io/devopsoh/api-userprofile:${{github.run_number}}
+        working-directory: apis/userprofile
