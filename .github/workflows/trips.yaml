@@ -5,6 +5,7 @@ on:
       - feature_*
     paths:
       - apis/trips/**
+      - .github/**
   pull_request:
     branches:
       - develop
