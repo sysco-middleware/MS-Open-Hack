@@ -1,4 +1,4 @@
-name: GitHub Actions Demo
+name: POI Pipeline
 on:
   push:
     branches:
@@ -22,7 +22,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1.7.2
         with:
-          dotnet-version: '2.1.x'
+          dotnet-version: '3.1.x'
       - name: Add Code Coverage Tools
         working-directory: apis/poi/tests/UnitTests
         run: dotnet add package coverlet.msbuild
@@ -59,6 +59,6 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
       - name: Build and push to Docker
         run: |
-          docker build . -t ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}} --file ./web/Dockerfile
+          docker build . -t ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}} --file Dockerfile
           docker push ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}}
         working-directory: apis/poi
