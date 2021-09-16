@@ -43,5 +43,6 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
       - run: |
-          docker build . -t openhackfho408g7acr.azurecr.io/devopsoh/api-user-java:${{github.run_number}}
+          docker build . -t openhackfho408g7acr.azurecr.io/devopsoh/api-user-java:${{github.run_number}} --file Dockerfile
           docker push openhackfho408g7acr.azurecr.io/devopsoh/api-user-java:${{github.run_number}}
+        working-directory: apis/user-java
