@@ -61,14 +61,3 @@ jobs:
           docker build . -t ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}} --file Dockerfile
           docker push ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}}
         working-directory: apis/poi/web
-      - name: Login to Azure
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ env.ACR_URL }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
-      - name: Build and push to Docker
-        run: |
-          docker build . -t ${{ env.ACR_URL }}/devopsoh/api-trips:${{github.run_number}} --file Dockerfile
-          docker push ${{ env.ACR_URL }}/devopsoh/api-trips:${{github.run_number}}
-        working-directory: apis/trips
