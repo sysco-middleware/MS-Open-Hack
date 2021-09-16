@@ -1,0 +1,60 @@
+name: GitHub Actions Demo
+on:
+  push:
+    branches:
+      - feature_*
+    paths:
+      - apis/trips/**
+      - .github/**
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - apis/trips/**
+jobs:
+  Build_POI_API:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: '2.1.x'
+      - name: Add Code Coverage Tools
+        working-directory: apis/poi/tests/UnitTests
+        run: dotnet add package coverlet.msbuild
+      - name: Install dependencies
+        run: dotnet restore
+        working-directory: apis/trips
+      - name: Build
+        run: dotnet build --no-restore
+        working-directory: apis/trips
+      - name: Test with the dotnet CLI
+        run: dotnet test --no-restore --verbosity normal /p:CollectCoverage=true /p:CoverletOutput=lcov/ /p:CoverletOutputFormat=lcov
+        working-directory: apis/trips
+      - name: code coverage
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: apis/poi/tests/UnitTests/lcov/coverage.info
+      - if: ${{ failure() }}
+        uses: actions/github-script@v4
+        with:
+          script: |
+            let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+            github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Error in build',
+              body: body
+            })
+      - name: Push to Azure
+        uses: azure/docker-login@v1
+        with:
+          login-server: 'openhackfho408g7acr.azurecr.io'
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+      - run: |
+          docker build . -t openhackfho408g7acr.azurecr.io/devopsoh/api-trips:${{github.run_number}}
+          docker push openhackfho408g7acr.azurecr.io/devopsoh/api-trips:${{github.run_number}}
