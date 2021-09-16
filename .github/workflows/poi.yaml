@@ -63,6 +63,7 @@ jobs:
           docker push ${{ env.ACR_URL }}/devopsoh/api-poi:${{github.run_number}}
         working-directory: apis/poi/web
   DEPLOY_TO_STAGING:
+    needs: Build_POI_API 
     runs-on: ubuntu-latest
     steps:
       - name: 'Run Azure webapp deploy action using publish profile credentials'
