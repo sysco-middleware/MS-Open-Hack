@@ -1,5 +1,15 @@
 name: GitHub Actions Demo
-on: [push]
+on: 
+  push: 
+    branches:
+      - feature_*
+    paths:
+      - apis/poi/**
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - apis/poi/**
 jobs:
   Build_POI_API:
     runs-on: ubuntu-latest
