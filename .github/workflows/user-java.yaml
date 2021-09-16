@@ -1,0 +1,46 @@
+name: GitHub Actions Demo
+on:
+  push:
+    branches:
+      - feature_*
+    paths:
+      - apis/user-java/**
+      - .github/**
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - apis/user-java/**
+jobs:
+  Build_User-Java_API:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+      - name: Test with the Java CLI
+        run: mvn test
+        working-directory: apis/user-java
+      - if: ${{ failure() }}
+        uses: actions/github-script@v4
+        with:
+          script: |
+            let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+            github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Error in build',
+              body: body
+            })
+      - name: Push to Azure
+        uses: azure/docker-login@v1
+        with:
+          login-server: 'openhackfho408g7acr.azurecr.io'
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+      - run: |
+          docker build . -t openhackfho408g7acr.azurecr.io/devopsoh/api-user-java:${{github.run_number}}
+          docker push openhackfho408g7acr.azurecr.io/devopsoh/api-user-java:${{github.run_number}}
